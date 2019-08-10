@@ -12,7 +12,10 @@
     <hr>
     <button onclick="CommunityDetect()">CommunityDetection</button><br>
     <button onclick="PageRank()">PageRank</button><br>
-    <a href="/PageRank">PageRank</a>
+    <label for="PRByNode">Node:</label>&nbsp;
+    <input type="text" name="PRByNode" id="PRByNode">&nbsp;
+    <button onclick="PageRankByNode()">PageRankByNode</button><br>
+    <!-- <a href="/PageRank">PageRank</a> -->
 
     <form action="ShortestPath" method="POST">
         <label for="source">Source:</label>
@@ -21,8 +24,10 @@
         <label for="target">Target:</label>
         <input type="text" name="target" id="target">
         <br>
-        <input type="submit" value="submit">
+        <input type="button" value="submit" onclick="ShortestPath()">
     </form>
+    <br>
+    <hr>
     <div id='result'></div>
     <script>
         function CommunityDetect() {
@@ -39,6 +44,35 @@
             $.ajax({
                 url: 'PageRank',
                 type: "GET",
+                success: (result) => {
+                    $('#result').text(result)
+                }
+            })
+        }
+
+        function PageRankByNode() {
+            $.ajax({
+                url: 'PageRankByNode',
+                type: "GET",
+                data: {
+                    node: $('#PRByNode').val()
+                },
+                // dataType: String,
+                success: (result) => {
+                    $('#result').text(result)
+                }
+            })
+        }
+
+        function ShortestPath() {
+            $.ajax({
+                url: 'ShortestPath',
+                type: "GET",
+                data: {
+                    source: $('#source').val(),
+                    target: $('#target').val()
+                },
+                // dataType: String,
                 success: (result) => {
                     $('#result').text(result)
                 }
