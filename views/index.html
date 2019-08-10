@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>post</title>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+</head>
+
+<body>
+    <h2>Shortest Path</h2>
+    <hr>
+    <button onclick="CommunityDetect()">CommunityDetection</button><br>
+    <button onclick="PageRank()">PageRank</button><br>
+    <a href="/PageRank">PageRank</a>
+
+    <form action="ShortestPath" method="POST">
+        <label for="source">Source:</label>
+        <input type="text" name="source" id="source">
+        <br>
+        <label for="target">Target:</label>
+        <input type="text" name="target" id="target">
+        <br>
+        <input type="submit" value="submit">
+    </form>
+    <div id='result'></div>
+    <script>
+        function CommunityDetect() {
+            $.ajax({
+                url: 'CommunityDetect',
+                type: "GET",
+                success: (result) => {
+                    $('#result').text(result)
+                }
+            })
+        }
+
+        function PageRank() {
+            $.ajax({
+                url: 'PageRank',
+                type: "GET",
+                success: (result) => {
+                    $('#result').text(result)
+                }
+            })
+        }
+    </script>
+</body>
+
+</html>
