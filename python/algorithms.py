@@ -38,8 +38,8 @@ str_data = sys.argv[2]
 with open(str_data,"r") as f:
     json_data = json.load(f)
 
-for i in json_data['links']:
-    i['weight'] = int(i['weight'])
+# for i in json_data['links']:
+#     i['weight'] = int(i['weight'])
 
 G = nx.readwrite.json_graph.node_link_graph(json_data)
 
@@ -56,9 +56,10 @@ try:
     else:
         print("There is no such algorithm!")
 except Exception as e:
-    print('Exception',e)
+    print('Exception:',e)
 else:
     # 保存当前图的结果
-    json_G = nx.readwrite.json_graph.node_link_data(G)
-    with open("result.json","w") as f:
-        json.dump(json_G,f)
+    if algorithm != 'SP':
+        json_G = nx.readwrite.json_graph.node_link_data(G)
+        with open("./data/result.json","w") as f:
+            json.dump(json_G,f)

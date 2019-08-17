@@ -1,15 +1,43 @@
 const express = require('express')
 var request = require('request')
+const fs = require('fs')
 var exec = require("child_process").exec
 
 const router = express.Router()
 var filename = './python/algorithms.py'
+var graph_file = './data/graph1.json'
 
 router.get('/', function(req, res) {
     res.render('index.html')
 })
 
-router.get('/CommunityDetect', function(req, res) {
+router.post('/get_data', function(req, res) {
+    graph_file = './data/' + req.body.dataName + '.json'
+    console.log(graph_file)
+    
+    fs.readFile(graph_file,function(err,data){
+        if (err) {
+            res.send('No such data:' + err);
+        }
+        console.log(JSON.parse(data.toString()))
+        res.json(JSON.parse(data.toString()))
+    })
+    
+})
+
+router.get('/get_data', function(req, res) {
+    graph_file = './data/' + req.query.dataName + '.json'
+    console.log(graph_file)
+    fs.readFile(graph_file,function(err,data){
+        if (err) {
+            res.send('No such data:' + err);
+        }
+        console.log(JSON.parse(data.toString()))
+        res.json(JSON.parse(data.toString()))
+    })
+})
+
+router.get('/graph_community_detection', function(req, res) {
     //res.send(JSON.stringify(req.body))
     // request 默认是 get 请求
     /*
@@ -21,18 +49,18 @@ router.get('/CommunityDetect', function(req, res) {
     })
     */
 
-    exec(`python ${filename} CD data.json`, function(err, stdout, stderr) {
+    exec(`python ${filename} CD ${graph_file}`, function(err, stdout, stderr) {
         if (err) {
             res.send('stderr:' + err);
         }
         if (stdout) {
-            res.send('stdout:' + stdout);
+            res.json(JSON.parse(stdout));
         }
 
     })
 })
 
-router.get('/PageRank', function(req, res) {
+router.get('/graph_page_rank', function(req, res) {
     //res.send(JSON.stringify(req.body))
     /*
     request('http://127.0.0.1:3000/pageRank', function(error, response, body) {
@@ -42,30 +70,30 @@ router.get('/PageRank', function(req, res) {
         res.send(body)
     })
     */
-    exec(`python ${filename} PR data.json`, function(err, stdout, stderr) {
+    exec(`python ${filename} PR ${graph_file}`, function(err, stdout, stderr) {
         if (err) {
             res.send('stderr:' + err);
         }
         if (stdout) {
-            res.send('stdout:' + stdout);
+            res.json(JSON.parse(stdout));
         }
 
     })
 })
 
-router.get('/PageRankByNode', function(req, res) {
-    exec(`python ${filename} PR data.json ${req.query.node}`, function(err, stdout, stderr) {
+router.get('/graph_page_rank_node', function(req, res) {
+    exec(`python ${filename} PR ${graph_file} ${req.query.node}`, function(err, stdout, stderr) {
         if (err) {
             res.send('stderr:' + err);
         }
         if (stdout) {
-            res.send('stdout:' + stdout);
+            res.json(stdout);
         }
 
     })
 })
 
-router.post('/ShortestPath', function(req, res) {
+router.post('/graph_shortest_path', function(req, res) {
     //res.send(JSON.stringify(req.body))
     // console.log(JSON.stringify(req.body))
     // console.log(req.body, req.body.source, req.body.target)
@@ -96,26 +124,26 @@ router.post('/ShortestPath', function(req, res) {
         res.send(body)
     })
     */
-    exec(`python ${filename} SP data.json ${req.body.source} ${req.body.target}`,
+    exec(`python ${filename} SP ${graph_file} ${req.body.source} ${req.body.target}`,
         function(err, stdout, stderr) {
             if (err) {
                 res.send('stderr:' + err);
             }
             if (stdout) {
-                res.send('stdout:' + stdout);
+                res.send(stdout);
             }
 
         })
 })
 
-router.get('/ShortestPath', function(req, res) {
-    exec(`python ${filename} SP data.json ${req.query.source} ${req.query.target}`,
+router.get('/graph_shortest_path', function(req, res) {
+    exec(`python ${filename} SP ${graph_file} ${req.query.source} ${req.query.target}`,
         function(err, stdout, stderr) {
             if (err) {
                 res.send('stderr:' + err);
             }
             if (stdout) {
-                res.send('stdout:' + stdout);
+                res.send(stdout);
             }
         })
 })

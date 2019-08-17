@@ -8,7 +8,7 @@
 </head>
 
 <body>
-    <h2>Shortest Path</h2>
+    <h2>Algorithms</h2>
     <hr>
     <button onclick="CommunityDetect()">CommunityDetection</button><br>
     <button onclick="PageRank()">PageRank</button><br>
@@ -32,7 +32,7 @@
     <script>
         function CommunityDetect() {
             $.ajax({
-                url: 'CommunityDetect',
+                url: 'graph_community_detection',
                 type: "GET",
                 success: (result) => {
                     $('#result').text(result)
@@ -42,7 +42,7 @@
 
         function PageRank() {
             $.ajax({
-                url: 'PageRank',
+                url: 'graph_page_rank',
                 type: "GET",
                 success: (result) => {
                     $('#result').text(result)
@@ -52,7 +52,7 @@
 
         function PageRankByNode() {
             $.ajax({
-                url: 'PageRankByNode',
+                url: 'graph_page_rank_node',
                 type: "GET",
                 data: {
                     node: $('#PRByNode').val()
@@ -66,7 +66,7 @@
 
         function ShortestPath() {
             $.ajax({
-                url: 'ShortestPath',
+                url: 'graph_shortest_path',
                 type: "GET",
                 data: {
                     source: $('#source').val(),
