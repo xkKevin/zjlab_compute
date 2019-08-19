@@ -58,7 +58,7 @@
         $(() => {
             $('#data span').click(function(e){
                 // console.log(e.target)
-                // 箭头函数
+                // 箭头函数不绑定this
                 $.ajax({
                     url: 'get_data',
                     type: "GET",
@@ -98,9 +98,8 @@
                 data: {
                     node: $('#PRByNode').val()
                 },
-                // dataType: String,
                 success: (result) => {
-                    $('#result').text(JSON.stringify(result))
+                    $('#result').text(result)
                 }
             })
         }
@@ -113,9 +112,8 @@
                     source: $('#source').val(),
                     target: $('#target').val()
                 },
-                // dataType: String,
                 success: (result) => {
-                    $('#result').text(JSON.stringify(result))
+                    $('#result').text(result)
                 }
             })
         }
