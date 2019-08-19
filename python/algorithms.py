@@ -17,8 +17,9 @@ def pageRank(G,node=None):
     if node:
         print(pr[node])
     else:
-        pagerank = sorted(pr.items(), key=lambda item: item[1], reverse=True)
-        jsonStr = json.dumps(pagerank)
+        # pagerank = sorted(pr.items(), key=lambda item: item[1], reverse=True)
+        # jsonStr = json.dumps(pagerank)
+        jsonStr = json.dumps(pr)
         print(jsonStr)
     # 给图添加属性，并保存计算的结果
     nx.set_node_attributes(G,pr,'pageRank')
@@ -59,7 +60,8 @@ except Exception as e:
     print('Exception:',e)
 else:
     # 保存当前图的结果
-    if algorithm != 'SP':
-        json_G = nx.readwrite.json_graph.node_link_data(G)
-        with open("./data/result.json","w") as f:
-            json.dump(json_G,f)
+    # if algorithm != 'SP':
+    #     json_G = nx.readwrite.json_graph.node_link_data(G)
+    #     with open("./data/result.json","w") as f:
+    #         json.dump(json_G,f)
+    pass

@@ -5,7 +5,7 @@ var exec = require("child_process").exec
 
 const router = express.Router()
 var filename = './python/algorithms.py'
-var graph_file = './data/graph1.json'
+var graph_file = './data/graph0.json'
 
 router.get('/', function(req, res) {
     res.render('index.html')
@@ -13,13 +13,10 @@ router.get('/', function(req, res) {
 
 router.post('/get_data', function(req, res) {
     graph_file = './data/' + req.body.dataName + '.json'
-    console.log(graph_file)
-    
     fs.readFile(graph_file,function(err,data){
         if (err) {
             res.send('No such data:' + err);
         }
-        console.log(JSON.parse(data.toString()))
         res.json(JSON.parse(data.toString()))
     })
     
@@ -27,12 +24,10 @@ router.post('/get_data', function(req, res) {
 
 router.get('/get_data', function(req, res) {
     graph_file = './data/' + req.query.dataName + '.json'
-    console.log(graph_file)
     fs.readFile(graph_file,function(err,data){
         if (err) {
             res.send('No such data:' + err);
         }
-        console.log(JSON.parse(data.toString()))
         res.json(JSON.parse(data.toString()))
     })
 })
@@ -48,7 +43,7 @@ router.get('/graph_community_detection', function(req, res) {
         res.send(body)
     })
     */
-
+    filename = './python/algorithms.py'
     exec(`python ${filename} CD ${graph_file}`, function(err, stdout, stderr) {
         if (err) {
             res.send('stderr:' + err);
@@ -56,7 +51,6 @@ router.get('/graph_community_detection', function(req, res) {
         if (stdout) {
             res.json(JSON.parse(stdout));
         }
-
     })
 })
 
@@ -70,6 +64,7 @@ router.get('/graph_page_rank', function(req, res) {
         res.send(body)
     })
     */
+    filename = './python/algorithms.py'
     exec(`python ${filename} PR ${graph_file}`, function(err, stdout, stderr) {
         if (err) {
             res.send('stderr:' + err);
@@ -77,11 +72,11 @@ router.get('/graph_page_rank', function(req, res) {
         if (stdout) {
             res.json(JSON.parse(stdout));
         }
-
     })
 })
 
 router.get('/graph_page_rank_node', function(req, res) {
+    filename = './python/algorithms.py'
     exec(`python ${filename} PR ${graph_file} ${req.query.node}`, function(err, stdout, stderr) {
         if (err) {
             res.send('stderr:' + err);
@@ -89,7 +84,6 @@ router.get('/graph_page_rank_node', function(req, res) {
         if (stdout) {
             res.json(stdout);
         }
-
     })
 })
 
@@ -124,6 +118,7 @@ router.post('/graph_shortest_path', function(req, res) {
         res.send(body)
     })
     */
+    filename = './python/algorithms.py'
     exec(`python ${filename} SP ${graph_file} ${req.body.source} ${req.body.target}`,
         function(err, stdout, stderr) {
             if (err) {
@@ -132,11 +127,11 @@ router.post('/graph_shortest_path', function(req, res) {
             if (stdout) {
                 res.send(stdout);
             }
-
         })
 })
 
 router.get('/graph_shortest_path', function(req, res) {
+    filename = './python/algorithms.py'
     exec(`python ${filename} SP ${graph_file} ${req.query.source} ${req.query.target}`,
         function(err, stdout, stderr) {
             if (err) {
@@ -147,6 +142,20 @@ router.get('/graph_shortest_path', function(req, res) {
             }
         })
 })
+
+router.get('/calculate_degree', function(req, res) {
+    filename = './python/calculate.py'
+    exec(`python ${filename} DG ${graph_file}`,
+    function(err, stdout, stderr) {
+        if (err) {
+            res.send('stderr:' + err);
+        }
+        if (stdout) {
+            res.json(JSON.parse(stdout));
+        }
+    })
+})
+
 
 router.post('/test', function(req, res) {
     //res.send(JSON.stringify(req.body))

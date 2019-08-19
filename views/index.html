@@ -3,11 +3,32 @@
 
 <head>
     <meta charset="utf-8">
-    <title>post</title>
+    <title>Computing Layer</title>
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <style>
+        #data td{
+            width: 65px;
+        }
+        #data td span{
+            background-color: lightblue;
+            cursor: pointer;
+        }
+        #data td span:hover{
+            background-color: pink;
+            font-weight: bold;
+        }
+    </style>
 </head>
 
 <body>
+    <h2>Graph Data</h2>
+    <hr>
+    <table id='data'>
+        <td align='center'><span>graph0</span></td>
+        <td align='center'><span>graph1</span></td>
+        <td align='center'><span>graph2</span></td>
+        <td align='center'><span>graph3</span></td>
+    </table>
     <h2>Algorithms</h2>
     <hr>
     <button onclick="CommunityDetect()">CommunityDetection</button><br>
@@ -27,15 +48,35 @@
         <input type="button" value="submit" onclick="ShortestPath()">
     </form>
     <br>
+    <h2>Calculation</h2>
+    <hr>
+    <button onclick="degree()">Calculation Degree</button><br>
+    <h2>Result</h2>
     <hr>
     <div id='result'></div>
     <script>
+        $(() => {
+            $('#data span').click(function(e){
+                // console.log(e.target)
+                // 箭头函数
+                $.ajax({
+                    url: 'get_data',
+                    type: "GET",
+                    data: {
+                        dataName: $(this).text()
+                    },
+                    success: (result) => {
+                        $('#result').text(JSON.stringify(result))
+                    }
+                })
+            })
+        });
         function CommunityDetect() {
             $.ajax({
                 url: 'graph_community_detection',
                 type: "GET",
                 success: (result) => {
-                    $('#result').text(result)
+                    $('#result').text(JSON.stringify(result))
                 }
             })
         }
@@ -45,7 +86,7 @@
                 url: 'graph_page_rank',
                 type: "GET",
                 success: (result) => {
-                    $('#result').text(result)
+                    $('#result').text(JSON.stringify(result))
                 }
             })
         }
@@ -59,7 +100,7 @@
                 },
                 // dataType: String,
                 success: (result) => {
-                    $('#result').text(result)
+                    $('#result').text(JSON.stringify(result))
                 }
             })
         }
@@ -74,7 +115,17 @@
                 },
                 // dataType: String,
                 success: (result) => {
-                    $('#result').text(result)
+                    $('#result').text(JSON.stringify(result))
+                }
+            })
+        }
+
+        function degree() {
+            $.ajax({
+                url: 'calculate_degree',
+                type: "GET",
+                success: (result) => {
+                    $('#result').text(JSON.stringify(result))
                 }
             })
         }
